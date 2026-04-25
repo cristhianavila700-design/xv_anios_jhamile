@@ -12,7 +12,7 @@
       --pink-deep: #e040d0;
       --pink-light: #fdb3f8;
       --gold: #ff0000;
-      --gold-light: #ff7a7a;
+      --gold-light: #da6a6a;
       --gold-dark: #c9a800;
       --white: #fff;
       --green-btn: #7ED957;
@@ -134,7 +134,7 @@
       color: #6b1a6b;
       font-family: 'Montserrat', sans-serif;
       font-weight: 600;
-      font-size: 0.7rem;
+      font-size: 0.9rem;
       letter-spacing: 4px;
       text-transform: uppercase;
       padding: 8px 24px;
@@ -150,7 +150,8 @@
     .hero-sub {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(1rem, 3vw, 1.4rem);
+      font-size: clamp(1.8rem, 3vw, 1.9rem);
+      font-weight: 700;
       color: var(--gold-light);
       animation: fadeDown 1.2s ease 0.2s both;
     }
@@ -178,7 +179,8 @@
     .hero-poem {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-size: clamp(1.8rem, 2.5vw, 1.9rem);
+      font-weight: 700;
       color: var(--gold-light);
       max-width: 700px;
       line-height: 1.9;
@@ -190,7 +192,8 @@
     .scroll-hint {
       margin-top: 48px;
       color: var(--gold);
-      font-size: 0.75rem;
+      font-size: 1.2rem;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
       opacity: 0.7;
@@ -217,7 +220,8 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       color: var(--gold-light);
-      font-size: 1.1rem;
+      font-size: 1.8rem;
+      font-weight: 700;
       text-align: center;
       margin-bottom: 40px;
     }
@@ -317,7 +321,8 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       color: var(--gold-light);
-      font-size: 1.15rem;
+      font-size: 1.8rem;
+      font-weight: 700;
       margin-bottom: 20px;
     }
 
@@ -364,7 +369,8 @@
 
     .inv-detail-label {
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.65rem;
+      font-size: 1.4rem;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--gold-light);
@@ -379,7 +385,8 @@
     }
 
     .inv-detail-sub {
-      font-size: 0.85rem;
+      font-size: 1.7rem;
+      font-weight: 700;
       color: var(--gold-light);
       font-style: italic;
     }
@@ -451,7 +458,8 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       color: var(--gold-light);
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+      font-weight: 700;
       line-height: 1.8;
       margin-bottom: 32px;
     }
@@ -736,7 +744,7 @@
       <div class="divider"></div>
       <div class="inv-xv">XV Años</div>
       <div class="inv-name">Jhamile Russell<br>Martínez Fernández</div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-light);font-size:1rem;">Dicho acto se realizará:</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-light);font-size:2rem;font-weight: 700;">Dicho acto se realizará:</p>
       <div class="inv-details">
         <div class="inv-detail">
           <div class="inv-icon">📅</div>
@@ -753,7 +761,7 @@
         <div class="inv-detail">
           <div class="inv-icon">📍</div>
           <div class="inv-detail-label">Lugar</div>
-          <div class="inv-detail-value" style="font-size:1rem;line-height:1.4">Salón 14 de<br>Septiembre</div>
+          <div class="inv-detail-value" style="font-size:1.2rem;line-height:1.4">Salón 14 de<br>Septiembre</div>
           <div class="inv-detail-sub">Calle Santivañez entre<br>C. Falsuri y Suipacha</div>
         </div>
       </div>
@@ -773,7 +781,7 @@
       <span class="ampersand">&</span>
       <div class="padrino-name">Patricia Delgadillo Borda</div>
       <div class="divider"></div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-light);font-size:1rem;margin-top:16px;">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-light);font-size:1.4rem;font-weight: 700;margin-top:16px;">
         Con amor y dedicación, quienes hacen posible este momento tan especial.
       </p>
     </div>
@@ -996,5 +1004,49 @@
       });
     }
   </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// CONFIG (pega la tuya aquí)
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID",
+  storageBucket: "TU_BUCKET",
+  messagingSenderId: "TU_ID",
+  appId: "TU_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+const db = getFirestore(app);
+
+// SUBIR ARCHIVOS
+window.handleFiles = async function(files){
+  if(!files.length) return;
+
+  for(const file of files){
+    const storageRef = ref(storage, 'galeria/' + Date.now() + "_" + file.name);
+
+    // subir archivo
+    await uploadBytes(storageRef, file);
+
+    // obtener URL
+    const url = await getDownloadURL(storageRef);
+
+    // guardar en Firestore
+    await addDoc(collection(db, "fotos"), {
+      name: file.name,
+      url: url,
+      type: file.type,
+      date: new Date()
+    });
+  }
+
+  alert("✅ Archivos subidos correctamente");
+};
+</script>
 </body>
 </html>
