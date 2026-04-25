@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>XV Años – Jhamile Russell Martínez Fernández</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #f86eec;
+      --pink-deep: #e040d0;
+      --pink-light: #fdb3f8;
+      --gold: #ff0000;
+      --gold-light: #ff7a7a;
+      --gold-dark: #c9a800;
+      --white: #fff;
+      --green-btn: #7ED957;
+      --green-btn-dark: #5cb83a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #fce4fa 0%, #f5a8ef 30%, #f0c0f8 60%, #fde8fc 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BUTTERFLIES ── */
+    .butterflies { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+
+    .butterfly {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      animation: flyPath linear infinite;
+    }
+
+    .butterfly svg {
+      width: 100%;
+      height: 100%;
+      animation: flapWings ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes flapWings {
+      0%, 100% { transform: scaleX(1);   }
+      25%       { transform: scaleX(0.2); }
+      50%       { transform: scaleX(1);   }
+      75%       { transform: scaleX(0.2); }
+    }
+
+    @keyframes flyPath {
+      0%   { transform: translate(-60px, 110vh) rotate(-10deg); opacity: 0; }
+      5%   { opacity: 1; }
+      25%  { transform: translate(20vw, 70vh)  rotate(8deg); }
+      50%  { transform: translate(50vw, 30vh)  rotate(-6deg); }
+      75%  { transform: translate(75vw, 55vh)  rotate(10deg); }
+      95%  { opacity: 1; }
+      100% { transform: translate(110vw, 10vh) rotate(-5deg); opacity: 0; }
+    }
+
+    /* ── FLOATING PARTICLES ── */
+    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.18; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── GLITTER STARS ── */
+    .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .star {
+      position: absolute;
+      color: var(--gold);
+      font-size: 1rem;
+      animation: twinkle ease-in-out infinite;
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50%       { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    /* decorative divider */
+    .divider {
+      width: 180px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 18px auto;
+    }
+
+    .ornament {
+      color: var(--gold);
+      font-size: 1.5rem;
+      letter-spacing: 12px;
+      opacity: 0.7;
+      display: block;
+      text-align: center;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      text-align: center;
+      background: radial-gradient(ellipse at 60% 40%, rgba(255,255,200,0.08) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #6b1a6b;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding: 8px 24px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeDown 1s ease both;
+    }
+
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(30px);  } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--gold-light);
+      animation: fadeDown 1.2s ease 0.2s both;
+    }
+
+    .hero-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      color: var(--gold);
+      text-shadow: 0 0 40px rgba(255,215,0,0.5), 2px 4px 0 rgba(100,0,100,0.3);
+      line-height: 1.1;
+      animation: fadeDown 1.2s ease 0.4s both;
+      filter: drop-shadow(0 0 20px rgba(255,215,0,0.3));
+    }
+
+    .hero-15 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(5rem, 18vw, 13rem);
+      color: transparent;
+      -webkit-text-stroke: 2px var(--gold);
+      line-height: 1;
+      animation: fadeIn 1.5s ease 0.6s both;
+      filter: drop-shadow(0 0 30px rgba(255,215,0,0.4));
+    }
+
+    .hero-poem {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: var(--gold-light);
+      max-width: 700px;
+      line-height: 1.9;
+      margin: 20px auto 0;
+      animation: fadeUp 1.4s ease 0.8s both;
+    }
+
+    /* scroll hint */
+    .scroll-hint {
+      margin-top: 48px;
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      animation: bounce 2s ease infinite;
+    }
+    @keyframes bounce { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(8px) } }
+    .scroll-hint::after { content: ' ↓'; }
+
+    /* ── PHOTO CAROUSEL ── */
+    #galeria-preview {
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(180,30,180,0.15) 100%);
+    }
+
+    .section-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      color: var(--gold);
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255,215,0,0.4);
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .carousel-track-outer {
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(100,0,100,0.4);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.7s cubic-bezier(.77,0,.175,1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      position: relative;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 30px 24px 20px;
+      background: linear-gradient(transparent, rgba(100,0,100,0.6));
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: var(--gold-light);
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #6b1a6b;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .carousel-btn:hover { transform: translateY(-50%) scale(1.15); box-shadow: 0 6px 30px rgba(0,0,0,0.4); }
+    .carousel-btn.prev { left: -25px; }
+    .carousel-btn.next { right: -25px; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.3);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dot.active { background: var(--gold); transform: scale(1.3); }
+
+    /* ── INVITATION ── */
+    #invitacion {
+      text-align: center;
+    }
+
+    .inv-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 30px;
+      padding: 50px 40px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(100,0,100,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .inv-greeting {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+    }
+
+    .inv-xv {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 10vw, 6rem);
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(255,215,0,0.4);
+      line-height: 1.1;
+    }
+
+    .inv-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 7vw, 4.5rem);
+      color: var(--gold-light);
+      margin: 10px 0 30px;
+      line-height: 1.2;
+    }
+
+    .inv-details {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      align-items: stretch;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .inv-detail {
+      flex: 1;
+      min-width: 130px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inv-detail + .inv-detail {
+      border-left: 1px solid rgba(255,215,0,0.25);
+    }
+
+    .inv-icon { font-size: 2rem; }
+
+    .inv-detail-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      opacity: 0.7;
+    }
+
+    .inv-detail-value {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .inv-detail-sub {
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      font-style: italic;
+    }
+
+    .location-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #5a0060;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      margin-top: 30px;
+      box-shadow: 0 8px 30px rgba(255,215,0,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .location-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 40px rgba(255,215,0,0.5); }
+
+    /* ── PADRINOS ── */
+    #padrinos { text-align: center; }
+
+    .padrinos-card {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 24px;
+      padding: 44px 36px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .padrino-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(255,215,0,0.3);
+      line-height: 1.3;
+    }
+
+    .ampersand {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      color: var(--gold-light);
+      margin: 8px 0;
+      display: block;
+      opacity: 0.7;
+    }
+
+    /* ── RSVP + GALERIA ── */
+    #rsvp { text-align: center; }
+
+    .rsvp-card {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 28px;
+      padding: 50px 36px;
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .rsvp-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #25D366, #1ab054);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-whatsapp:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 40px rgba(37,211,102,0.55); }
+
+    .btn-green {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--green-btn), #a3e26b);
+      color: #2a5500;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(126,217,87,0.35);
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-green:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 40px rgba(126,217,87,0.5); }
+
+    /* upload modal */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(50,0,60,0.75);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      background: linear-gradient(145deg, #e050d8, #c030b8);
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 24px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      transform: scale(0.85);
+      transition: transform 0.3s;
+    }
+    .modal-overlay.active .modal-box { transform: scale(1); }
+
+    .modal-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .modal-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 1rem;
+      margin-bottom: 24px;
+    }
+
+    .file-drop {
+      border: 2px dashed rgba(255,215,0,0.5);
+      border-radius: 16px;
+      padding: 30px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .file-drop:hover, .file-drop.drag-over { border-color: var(--gold); background: rgba(255,215,0,0.07); }
+    .file-drop input[type=file] { position: absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+
+    .file-drop-icon { font-size: 2.5rem; }
+    .file-drop-text { color: var(--gold-light); font-size: 0.9rem; margin-top: 8px; }
+
+    .upload-progress {
+      display: none;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 100px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .upload-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 100px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .upload-status { color: var(--gold-light); font-size: 0.9rem; margin-top: 12px; min-height: 22px; }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none; border: none;
+      color: var(--gold); font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .modal-close:hover { opacity: 1; }
+
+    .modal-actions { margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,215,0,0.5);
+      color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: rgba(255,215,0,0.1); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 40px 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: rgba(255,215,0,0.6);
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255,215,0,0.15);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .carousel-btn.prev { left: 6px; }
+      .carousel-btn.next { right: 6px; }
+      .carousel-slide img { height: 240px; }
+      .inv-card, .padrinos-card, .rsvp-card { padding: 32px 20px; }
+      .inv-detail + .inv-detail { border-left: none; border-top: 1px solid rgba(255,215,0,0.25); }
+      .inv-details { flex-direction: column; }
+      .modal-box { padding: 30px 20px; }
+    }
+
+    /* ── ENTRANCE ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* audio note */
+    .audio-note {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 50;
+      background: rgba(100,0,100,0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 100px;
+      padding: 10px 20px;
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .audio-note:hover { transform: scale(1.05); }
+    .audio-note.muted .music-icon::after { content: '🔇'; }
+    .audio-note .music-icon::after { content: '🎵'; }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND PARTICLES -->
+  <div class="particles" id="particles"></div>
+  <div class="stars" id="stars"></div>
+  <div class="butterflies" id="butterflies"></div>
+
+  <!-- AUDIO -->
+  <audio id="bgMusic" loop>
+    <source src="cancion_jhami.mp3" type="audio/mpeg">
+  </audio>
+  <div class="audio-note" id="audioToggle">
+    <span class="music-icon"></span> Música
+  </div>
+
+  <!-- ══ SECTION 1 – HERO ══ -->
+  <section id="hero">
+    <div class="hero-badge">✦ Una noche mágica ✦</div>
+    <p class="hero-sub">Hace quince años nació una hermosa niña,<br>enviada por Dios para ser el más grande tesoro.</p>
+    <div class="divider"></div>
+    <h1 class="hero-name">Jhamile Russell</h1>
+    <div class="hero-15">XV</div>
+    <p class="hero-poem">
+      Hay momentos en la vida que imaginamos, soñamos y esperamos.<br>
+      <em>Uno de esos momentos ha llegado…</em>
+    </p>
+    <div class="scroll-hint">Descubre más</div>
+  </section>
+
+  <!-- ══ SECTION 2 – CARRUSEL ══ -->
+  <section id="galeria-preview">
+    <h2 class="section-title reveal">Sus mejores momentos</h2>
+    <p class="section-subtitle reveal">Una pequeña galería de recuerdos inolvidables</p>
+    <div class="carousel-wrapper reveal">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="track">
+          <div class="carousel-slide">
+            <img src="foto1.jpeg" alt="Recuerdo 1">
+            <div class="slide-overlay">Mis primeros años ✨</div>
+          </div>
+          <div class="carousel-slide">
+            <img src="foto2.jpeg" alt="Recuerdo 2">
+            <div class="slide-overlay">Creciendo con amor 🌸</div>
+          </div>
+          <div class="carousel-slide">
+            <img src="foto3.jpeg" alt="Recuerdo 3">
+            <div class="slide-overlay">Momentos especiales 💕</div>
+          </div>
+          <div class="carousel-slide">
+            <img src="foto4.jpeg" alt="Recuerdo 4">
+            <div class="slide-overlay">Risas y alegrías 🌟</div>
+          </div>
+          <div class="carousel-slide">
+            <img src="foto5.jpeg" alt="Recuerdo 5">
+            <div class="slide-overlay">El camino recorrido 🦋</div>
+          </div>
+          <div class="carousel-slide">
+            <img src="foto6.jpeg" alt="Recuerdo 6">
+            <div class="slide-overlay">Con familia y amigos 💐</div>
+          </div>
+          <div class="carousel-slide">
+            <img src="foto7.jpeg" alt="Recuerdo 7">
+            <div class="slide-overlay">¡Y ahora XV años! 👑</div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn prev" id="prevBtn">&#9664;</button>
+      <button class="carousel-btn next" id="nextBtn">&#9654;</button>
+      <div class="carousel-dots" id="dots"></div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3 – INVITACIÓN ══ -->
+  <section id="invitacion">
+    <div class="inv-card reveal">
+      <span class="ornament">❧ ✦ ❧</span>
+      <p class="inv-greeting">Invitamos cordialmente a la fiesta de:</p>
+      <div class="divider"></div>
+      <div class="inv-xv">XV Años</div>
+      <div class="inv-name">Jhamile Russell<br>Martínez Fernández</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-light);font-size:1rem;">Dicho acto se realizará:</p>
+      <div class="inv-details">
+        <div class="inv-detail">
+          <div class="inv-icon">📅</div>
+          <div class="inv-detail-label">Fecha</div>
+          <div class="inv-detail-value">1</div>
+          <div class="inv-detail-sub">Mayo</div>
+        </div>
+        <div class="inv-detail">
+          <div class="inv-icon">⏰</div>
+          <div class="inv-detail-label">Hora</div>
+          <div class="inv-detail-value">18:00</div>
+          <div class="inv-detail-sub">Hrs en punto</div>
+        </div>
+        <div class="inv-detail">
+          <div class="inv-icon">📍</div>
+          <div class="inv-detail-label">Lugar</div>
+          <div class="inv-detail-value" style="font-size:1rem;line-height:1.4">Salón 14 de<br>Septiembre</div>
+          <div class="inv-detail-sub">Calle Santivañez entre<br>C. Falsuri y Suipacha</div>
+        </div>
+      </div>
+      <a href="https://maps.google.com/?q=Calle+Santivañez+entre+Falsuri+y+Suipacha,+Bolivia" target="_blank" class="location-btn">
+        📍 &nbsp;Ver Ubicación en Maps
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 4 – PADRINOS ══ -->
+  <section id="padrinos">
+    <h2 class="section-title reveal">Mis Padrinos</h2>
+    <div class="divider"></div>
+    <div class="padrinos-card reveal">
+      <span class="ornament" style="font-size:2rem; margin-bottom:20px; display:block;">💍</span>
+      <div class="padrino-name">Juan Avila Rodríguez</div>
+      <span class="ampersand">&</span>
+      <div class="padrino-name">Patricia Delgadillo Borda</div>
+      <div class="divider"></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-light);font-size:1rem;margin-top:16px;">
+        Con amor y dedicación, quienes hacen posible este momento tan especial.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 5 – RSVP ══ -->
+  <section id="rsvp">
+    <h2 class="section-title reveal">¡Únete a la fiesta!</h2>
+    <div class="inv-card reveal" style="max-width:640px;">
+      <p class="rsvp-text reveal">
+        Confirma tu asistencia y sé parte de este día tan especial.<br><br>
+        <em>Sube fotos de la fiesta o donde aparece la quinceañera,<br>
+        juntos crearemos unos hermosos recuerdos eternos. 📸</em>
+      </p>
+      <div class="btn-group">
+        <a href="https://wa.me/59162714697?text=Confirmo%20mi%20asistencia%20a%20tu%20fiesta%20de%20XV%20a%C3%B1os%20Jhamile" target="_blank" class="btn-whatsapp">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Confirmar Asistencia
+        </a>
+        <button class="btn-green" onclick="openUploadModal()">
+          📷 Subir Imágenes / Videos
+        </button>
+        <a href="galeria.html" class="btn-green" style="text-decoration:none;">
+          🖼️ Ver Galería
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ornament" style="margin-bottom:12px;">✦ ✦ ✦</div>
+    Con todo el amor del mundo · XV Años de Jhamile Russell · 1 de Mayo
+  </footer>
+
+  <!-- ══ UPLOAD MODAL ══ -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeUploadModal()">✕</button>
+      <div class="modal-title">Subir Recuerdo</div>
+      <p class="modal-subtitle">Comparte tus fotos y videos de la fiesta 🌸</p>
+      <div class="file-drop" id="fileDrop">
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
+        <div class="file-drop-icon">📁</div>
+        <div class="file-drop-text">Arrastra aquí tus fotos o videos<br><small style="opacity:0.7">o haz clic para seleccionar</small></div>
+      </div>
+      <div class="upload-progress" id="uploadProgress">
+        <div class="upload-progress-bar" id="progressBar"></div>
+      </div>
+      <div class="upload-status" id="uploadStatus"></div>
+      <div class="modal-actions">
+        <button class="btn-outline" onclick="closeUploadModal()">Cancelar</button>
+        <a href="galeria.html" class="btn-green" style="font-size:0.8rem;padding:12px 22px;">Ver Galería 🖼️</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── PARTICLES ── */
+    const pc = document.getElementById('particles');
+    const colors = ['#f9d0f7','#fce08a','#f86eec','#fff','#ffe0fb'];
+    for(let i=0;i<28;i++){
+      const d=document.createElement('div');
+      d.className='particle';
+      const sz=Math.random()*50+15;
+      d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*18+12}s;animation-delay:${Math.random()*10}s;`;
+      pc.appendChild(d);
+    }
+
+    /* ── STARS ── */
+    const sc=document.getElementById('stars');
+    const starsArr=['✦','✧','★','✿','❋','❀','✸'];
+    for(let i=0;i<40;i++){
+      const s=document.createElement('span');
+      s.className='star';
+      s.textContent=starsArr[Math.floor(Math.random()*starsArr.length)];
+      const sz=Math.random()*1.2+0.5;
+      s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${sz}rem;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*5}s;`;
+      sc.appendChild(s);
+    }
+
+    /* ── BUTTERFLIES ── */
+    const bc = document.getElementById('butterflies');
+    const bfColors = [
+      ['#e040d0','#f9a8f0'],  // pink/magenta
+      ['#FFD700','#FFE97A'],  // gold
+      ['#ff85ea','#ffc8f8'],  // light pink
+      ['#c030b8','#e870dc'],  // deep pink
+      ['#fff','#fde8fc'],     // white
+    ];
+    const bfCount = 10;
+    for(let i = 0; i < bfCount; i++){
+      const col = bfColors[Math.floor(Math.random() * bfColors.length)];
+      const size = Math.random() * 28 + 22; // 22–50px
+      const duration = Math.random() * 18 + 16; // 16–34s
+      const delay = Math.random() * 20; // stagger
+      const flapDur = Math.random() * 0.4 + 0.25; // 0.25–0.65s
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'butterfly';
+      wrapper.style.cssText = `width:${size}px;height:${size}px;animation-duration:${duration}s;animation-delay:-${delay}s;top:${Math.random()*80}%;`;
+
+      wrapper.innerHTML = `
+        <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"
+             style="animation-duration:${flapDur}s;">
+          <!-- left wings -->
+          <ellipse cx="30" cy="20" rx="28" ry="18" fill="${col[0]}" opacity="0.82"/>
+          <ellipse cx="25" cy="42" rx="20" ry="13" fill="${col[0]}" opacity="0.72"/>
+          <!-- right wings -->
+          <ellipse cx="70" cy="20" rx="28" ry="18" fill="${col[1]}" opacity="0.82"/>
+          <ellipse cx="75" cy="42" rx="20" ry="13" fill="${col[1]}" opacity="0.72"/>
+          <!-- body -->
+          <ellipse cx="50" cy="30" rx="4" ry="20" fill="#6b006b" opacity="0.7"/>
+          <!-- antennae -->
+          <line x1="48" y1="12" x2="36" y2="2"  stroke="#6b006b" stroke-width="1.5" opacity="0.6"/>
+          <line x1="52" y1="12" x2="64" y2="2"  stroke="#6b006b" stroke-width="1.5" opacity="0.6"/>
+          <circle cx="36" cy="2"  r="2" fill="#6b006b" opacity="0.6"/>
+          <circle cx="64" cy="2"  r="2" fill="#6b006b" opacity="0.6"/>
+          <!-- wing shimmer -->
+          <ellipse cx="26" cy="18" rx="10" ry="6" fill="white" opacity="0.18"/>
+          <ellipse cx="74" cy="18" rx="10" ry="6" fill="white" opacity="0.18"/>
+        </svg>`;
+      bc.appendChild(wrapper);
+    }
+
+    /* ── CAROUSEL ── */
+    const track=document.getElementById('track');
+    const slides=track.children;
+    const dotsEl=document.getElementById('dots');
+    let cur=0;
+    const total=slides.length;
+
+    for(let i=0;i<total;i++){
+      const d=document.createElement('div');
+      d.className='dot'+(i===0?' active':'');
+      d.onclick=()=>goTo(i);
+      dotsEl.appendChild(d);
+    }
+
+    function goTo(n){
+      cur=(n+total)%total;
+      track.style.transform=`translateX(-${cur*100}%)`;
+      document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+    }
+
+    document.getElementById('prevBtn').onclick=()=>goTo(cur-1);
+    document.getElementById('nextBtn').onclick=()=>goTo(cur+1);
+    setInterval(()=>goTo(cur+1),4500);
+
+    /* ── REVEAL ON SCROLL ── */
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible');});
+    },{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    /* ── AUDIO ── */
+    const audio=document.getElementById('bgMusic');
+    const toggle=document.getElementById('audioToggle');
+    let muted=true;
+
+    // Try autoplay on first interaction
+    document.addEventListener('click',()=>{
+      if(muted){ audio.play().catch(()=>{}); muted=false; }
+    },{once:true});
+
+    toggle.onclick=()=>{
+      if(audio.paused){ audio.play(); toggle.classList.remove('muted'); }
+      else { audio.pause(); toggle.classList.add('muted'); }
+    };
+
+    /* ── UPLOAD MODAL ── */
+    function openUploadModal(){ document.getElementById('uploadModal').classList.add('active'); }
+    function closeUploadModal(){ document.getElementById('uploadModal').classList.remove('active'); }
+
+    document.getElementById('uploadModal').addEventListener('click',function(e){
+      if(e.target===this) closeUploadModal();
+    });
+
+    // Drag & drop
+    const drop=document.getElementById('fileDrop');
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag-over');});
+    drop.addEventListener('dragleave',()=>drop.classList.remove('drag-over'));
+    drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag-over');handleFiles(e.dataTransfer.files);});
+
+    function handleFiles(files){
+      if(!files||files.length===0) return;
+      const status=document.getElementById('uploadStatus');
+      const progress=document.getElementById('uploadProgress');
+      const bar=document.getElementById('progressBar');
+
+      progress.style.display='block';
+      status.textContent='Guardando archivos…';
+
+      // Save to localStorage as base64 (simulated local gallery)
+      let saved=JSON.parse(localStorage.getItem('xv_gallery')||'[]');
+      let count=0;
+
+      Array.from(files).forEach(file=>{
+        // Check size: max 50MB
+        if(file.size>50*1024*1024){
+          status.textContent=`"${file.name}" es demasiado grande (máx 50MB).`;
+          return;
+        }
+        const reader=new FileReader();
+        reader.onload=function(e){
+          saved.push({name:file.name,type:file.type,data:e.target.result,date:new Date().toISOString()});
+          localStorage.setItem('xv_gallery',JSON.stringify(saved));
+          count++;
+          const pct=Math.round((count/files.length)*100);
+          bar.style.width=pct+'%';
+          if(count===files.length){
+            status.textContent=`✅ ${count} archivo(s) guardado(s) en la galería.`;
+            setTimeout(()=>{
+              progress.style.display='none';
+              bar.style.width='0%';
+            },2500);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>
