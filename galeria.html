@@ -84,7 +84,8 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       color: var(--gold-light);
-      font-size: 1.1rem;
+      font-size: 1.8rem;
+      font-weight: 700;
       margin-top: 8px;
     }
 
@@ -306,9 +307,6 @@
     <button class="btn-green" onclick="document.getElementById('hiddenFileInput').click()">
       📷 Subir Fotos / Videos
     </button>
-    <button class="btn-green" onclick="clearAll()" style="background:linear-gradient(135deg,#ff6eb4,#ff9de2);color:#5a0040;">
-      🗑️ Limpiar todo
-    </button>
   </div>
 
   <input type="file" id="hiddenFileInput" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
@@ -516,5 +514,49 @@
 
     loadGallery();
   </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// CONFIG (pega la tuya aquí)
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID",
+  storageBucket: "TU_BUCKET",
+  messagingSenderId: "TU_ID",
+  appId: "TU_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+const db = getFirestore(app);
+
+// SUBIR ARCHIVOS
+window.handleFiles = async function(files){
+  if(!files.length) return;
+
+  for(const file of files){
+    const storageRef = ref(storage, 'galeria/' + Date.now() + "_" + file.name);
+
+    // subir archivo
+    await uploadBytes(storageRef, file);
+
+    // obtener URL
+    const url = await getDownloadURL(storageRef);
+
+    // guardar en Firestore
+    await addDoc(collection(db, "fotos"), {
+      name: file.name,
+      url: url,
+      type: file.type,
+      date: new Date()
+    });
+  }
+
+  alert("✅ Archivos subidos correctamente");
+};
+</script>
 </body>
 </html>
