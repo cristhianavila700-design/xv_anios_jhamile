@@ -212,7 +212,7 @@
     .empty-state.show { display: block; }
     .empty-icon { font-size: 4rem; margin-bottom: 20px; }
     .empty-title { font-family:'Great Vibes',cursive; font-size:2.5rem; color:var(--gold); margin-bottom:12px; }
-    .empty-text { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold-light); font-size:1.1rem; }
+    .empty-text { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold-light); font-size:1.8rem;font-weight: 700; }
 
     /* lightbox */
     .lightbox {
@@ -281,7 +281,7 @@
       padding: 30px 20px;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      color: rgba(255,215,0,0.55);
+      color: rgba(255, 0, 0, 0.55);
       font-size: 0.9rem;
       border-top: 1px solid rgba(255,215,0,0.12);
     }
@@ -306,6 +306,9 @@
   <div class="upload-bar">
     <button class="btn-green" onclick="document.getElementById('hiddenFileInput').click()">
       📷 Subir Fotos / Videos
+    </button>
+    <button class="btn-green" onclick="clearAll()" style="background:linear-gradient(135deg,#ff6eb4,#ff9de2);color:#5a0040;">
+      🗑️ Limpiar todo
     </button>
   </div>
 
@@ -332,6 +335,17 @@
   </footer>
 
   <script>
+    /* ════════════════════════════════
+       CONFIGURACIÓN CLOUDINARY
+    ════════════════════════════════ */
+    const CLOUD_NAME   = 'djpgz9ftm';
+    const UPLOAD_PRESET = 'XV-Jhamile';
+    const FOLDER       = 'xv-jhamile-galeria';
+
+    // URL pública para listar recursos vía Cloudinary Search API (sin auth, usando tag)
+    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
+    const SEARCH_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${FOLDER}.json`;
+
     /* ── PARTICLES ── */
     const pc=document.getElementById('particles');
     const cols=['#f9d0f7','#fce08a','#f86eec','#fff'];
@@ -376,187 +390,207 @@
       bc.appendChild(wrapper);
     }
 
-    /* ── GALLERY ── */
-    const grid=document.getElementById('grid');
-    const emptyState=document.getElementById('emptyState');
-    let items=[];
+    /* ════════════════════════════════
+       GALERÍA CON CLOUDINARY
+    ════════════════════════════════ */
+    const grid = document.getElementById('grid');
+    const emptyState = document.getElementById('emptyState');
+    let items = []; // { url, publicId, type, name }
 
-    function loadGallery(){
-      items=JSON.parse(localStorage.getItem('xv_gallery')||'[]');
-      renderGrid();
+    /* ── Cargar galería desde Cloudinary (usando lista por tag/folder) ── */
+    async function loadGallery() {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;">Cargando recuerdos... ✨</div>`;
+      emptyState.classList.remove('show');
+
+      try {
+        // Traemos la lista de imágenes usando el endpoint de lista por tag
+        const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${FOLDER}.json`);
+        let imageItems = [];
+        if (res.ok) {
+          const data = await res.json();
+          imageItems = (data.resources || []).map(r => ({
+            url: `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/q_auto,f_auto/${r.public_id}`,
+            fullUrl: `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${r.public_id}`,
+            publicId: r.public_id,
+            type: 'image',
+            name: r.public_id.split('/').pop()
+          }));
+        }
+
+        // Videos no aparecen en el endpoint de imagen, los guardamos en localStorage como referencia
+        const savedVideos = JSON.parse(localStorage.getItem('xv_videos') || '[]');
+
+        items = [...imageItems, ...savedVideos];
+        renderGrid();
+      } catch(e) {
+        // Si falla la carga remota, mostrar lo que haya en localStorage
+        items = JSON.parse(localStorage.getItem('xv_videos') || '[]');
+        renderGrid();
+      }
     }
 
-    function renderGrid(){
-      grid.innerHTML='';
-      if(items.length===0){ emptyState.classList.add('show'); return; }
+    /* ── Renderizar la cuadrícula ── */
+    function renderGrid() {
+      grid.innerHTML = '';
+      if (items.length === 0) { emptyState.classList.add('show'); return; }
       emptyState.classList.remove('show');
-      items.forEach((item,i)=>{
-        const el=document.createElement('div');
-        el.className='gallery-item';
 
-        const isVideo=item.type.startsWith('video');
+      items.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'gallery-item';
+
+        const isVideo = item.type === 'video';
         let media;
-        if(isVideo){
-          media=document.createElement('video');
-          media.src=item.data;
-          media.muted=true;
-          media.loop=true;
-          el.addEventListener('mouseenter',()=>media.play());
-          el.addEventListener('mouseleave',()=>{ media.pause(); media.currentTime=0; });
-          const playIcon=document.createElement('div');
-          playIcon.className='video-play-icon';
-          playIcon.textContent='▶';
+
+        if (isVideo) {
+          media = document.createElement('video');
+          media.src = item.url;
+          media.muted = true;
+          media.loop = true;
+          el.addEventListener('mouseenter', () => media.play());
+          el.addEventListener('mouseleave', () => { media.pause(); media.currentTime = 0; });
+          const playIcon = document.createElement('div');
+          playIcon.className = 'video-play-icon';
+          playIcon.textContent = '▶';
           el.appendChild(playIcon);
         } else {
-          media=document.createElement('img');
-          media.src=item.data;
-          media.alt=item.name;
+          media = document.createElement('img');
+          media.src = item.url;
+          media.alt = item.name;
+          media.loading = 'lazy';
         }
         el.appendChild(media);
 
-        // overlay
-        const ov=document.createElement('div');
-        ov.className='item-overlay';
-        const nm=document.createElement('div');
-        nm.className='item-name';
-        nm.textContent=item.name;
+        // overlay con nombre
+        const ov = document.createElement('div');
+        ov.className = 'item-overlay';
+        const nm = document.createElement('div');
+        nm.className = 'item-name';
+        nm.textContent = item.name;
         ov.appendChild(nm);
         el.appendChild(ov);
 
-        // delete btn
-        const del=document.createElement('button');
-        del.className='item-delete';
-        del.innerHTML='✕';
-        del.onclick=(e)=>{ e.stopPropagation(); deleteItem(i); };
-        el.appendChild(del);
-
-        el.addEventListener('click',()=>openLightbox(item));
+        el.addEventListener('click', () => openLightbox(item));
         grid.appendChild(el);
       });
     }
 
-    function deleteItem(i){
-      items.splice(i,1);
-      localStorage.setItem('xv_gallery',JSON.stringify(items));
-      renderGrid();
-      showToast('Archivo eliminado');
-    }
+    /* ── Subir archivos a Cloudinary ── */
+    async function handleFiles(files) {
+      if (!files || files.length === 0) return;
 
-    function clearAll(){
-      if(!confirm('¿Eliminar todos los archivos de la galería?')) return;
-      items=[];
-      localStorage.removeItem('xv_gallery');
-      renderGrid();
-      showToast('Galería limpiada');
-    }
+      const fileArr = Array.from(files);
+      let uploaded = 0;
+      let failed = 0;
 
-    function handleFiles(files){
-      if(!files||files.length===0) return;
-      let count=0;
-      Array.from(files).forEach(file=>{
-        if(file.size>50*1024*1024){ showToast(`"${file.name}" supera los 50MB`); return; }
-        const reader=new FileReader();
-        reader.onload=function(e){
-          items.push({name:file.name,type:file.type,data:e.target.result,date:new Date().toISOString()});
-          count++;
-          if(count===files.length){
-            localStorage.setItem('xv_gallery',JSON.stringify(items));
-            renderGrid();
-            showToast(`✅ ${count} archivo(s) guardado(s)`);
+      showToast(`⏳ Subiendo ${fileArr.length} archivo(s)...`);
+
+      for (const file of fileArr) {
+        // Límite de tamaño: 100MB
+        if (file.size > 100 * 1024 * 1024) {
+          showToast(`❌ "${file.name}" supera los 100MB`);
+          failed++;
+          continue;
+        }
+
+        const isVideo = file.type.startsWith('video');
+        const resourceType = isVideo ? 'video' : 'image';
+        const uploadEndpoint = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append('folder', FOLDER);
+        // Agregar tag para poder listar después
+        formData.append('tags', FOLDER);
+
+        try {
+          const res = await fetch(uploadEndpoint, { method: 'POST', body: formData });
+          const data = await res.json();
+
+          if (data.secure_url) {
+            const newItem = {
+              url: isVideo ? data.secure_url : `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/q_auto,f_auto/${data.public_id}`,
+              fullUrl: data.secure_url,
+              publicId: data.public_id,
+              type: isVideo ? 'video' : 'image',
+              name: file.name
+            };
+
+            // Videos los guardamos también en localStorage como referencia
+            if (isVideo) {
+              const savedVideos = JSON.parse(localStorage.getItem('xv_videos') || '[]');
+              savedVideos.push(newItem);
+              localStorage.setItem('xv_videos', JSON.stringify(savedVideos));
+            }
+
+            items.push(newItem);
+            uploaded++;
+          } else {
+            failed++;
           }
-        };
-        reader.readAsDataURL(file);
-      });
+        } catch(e) {
+          failed++;
+        }
+      }
+
+      renderGrid();
+
+      if (uploaded > 0 && failed === 0) {
+        showToast(`✅ ${uploaded} archivo(s) subido(s) con éxito`);
+      } else if (uploaded > 0 && failed > 0) {
+        showToast(`✅ ${uploaded} subido(s) · ❌ ${failed} fallido(s)`);
+      } else {
+        showToast(`❌ No se pudo subir ningún archivo`);
+      }
     }
 
-    /* ── LIGHTBOX ── */
-    function openLightbox(item){
-      const lb=document.getElementById('lightbox');
-      const inner=document.getElementById('lightboxInner');
-      // remove previous media (keep close btn)
-      const prev=inner.querySelector('img,video');
-      if(prev) prev.remove();
+    /* ── Lightbox ── */
+    function openLightbox(item) {
+      const lb = document.getElementById('lightbox');
+      const inner = document.getElementById('lightboxInner');
+      const prev = inner.querySelector('img,video');
+      if (prev) prev.remove();
 
-      const isVideo=item.type.startsWith('video');
+      const isVideo = item.type === 'video';
       let m;
-      if(isVideo){
-        m=document.createElement('video');
-        m.src=item.data;
-        m.controls=true;
-        m.autoplay=true;
+      if (isVideo) {
+        m = document.createElement('video');
+        m.src = item.fullUrl || item.url;
+        m.controls = true;
+        m.autoplay = true;
       } else {
-        m=document.createElement('img');
-        m.src=item.data;
-        m.alt=item.name;
+        m = document.createElement('img');
+        m.src = item.fullUrl || item.url;
+        m.alt = item.name;
       }
       inner.appendChild(m);
       lb.classList.add('active');
     }
 
-    function closeLightbox(){
-      const lb=document.getElementById('lightbox');
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
       lb.classList.remove('active');
-      const vid=lb.querySelector('video');
-      if(vid){ vid.pause(); }
+      const vid = lb.querySelector('video');
+      if (vid) vid.pause();
     }
 
-    document.getElementById('lightbox').addEventListener('click',function(e){
-      if(e.target===this) closeLightbox();
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
     });
 
-    /* ── TOAST ── */
-    function showToast(msg){
-      const t=document.getElementById('toast');
-      t.textContent=msg;
+    /* ── Toast ── */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
       t.classList.add('show');
-      setTimeout(()=>t.classList.remove('show'),3000);
+      setTimeout(() => t.classList.remove('show'), 3500);
     }
+
+    /* ── Quitar botón "Limpiar todo" (no tiene sentido sin admin) ── */
+    document.querySelector('button[onclick="clearAll()"]')?.remove();
 
     loadGallery();
   </script>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// CONFIG (pega la tuya aquí)
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_BUCKET",
-  messagingSenderId: "TU_ID",
-  appId: "TU_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
-const db = getFirestore(app);
-
-// SUBIR ARCHIVOS
-window.handleFiles = async function(files){
-  if(!files.length) return;
-
-  for(const file of files){
-    const storageRef = ref(storage, 'galeria/' + Date.now() + "_" + file.name);
-
-    // subir archivo
-    await uploadBytes(storageRef, file);
-
-    // obtener URL
-    const url = await getDownloadURL(storageRef);
-
-    // guardar en Firestore
-    await addDoc(collection(db, "fotos"), {
-      name: file.name,
-      url: url,
-      type: file.type,
-      date: new Date()
-    });
-  }
-
-  alert("✅ Archivos subidos correctamente");
-};
-</script>
 </body>
 </html>
